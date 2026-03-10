@@ -38,10 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sfPro.variable} antialiased`}>
-        <Providers>
-          <Navbar />
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

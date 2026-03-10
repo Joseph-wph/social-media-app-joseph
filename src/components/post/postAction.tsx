@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useLike } from "@/features/like/useLike";
 import { Heart } from "lucide-react";
 
@@ -10,24 +9,23 @@ type Props = {
     likedByMe: boolean;
     likeCount: number;
   };
+  setLiked: (liked: boolean) => void;
+  setLikes: (likes: number) => void;
 };
 
-export default function PostActions({ post }: Props) {
+export default function PostActions({ post, setLiked, setLikes }: Props) {
   const likeMutation = useLike();
-
-  const [liked, setLiked] = useState(post.likedByMe);
-  const [likes, setLikes] = useState(post.likeCount);
 
   const handleLike = () => {
     likeMutation.mutate(
-      { postId: post.id, liked: !liked },
+      { postId: post.id, liked: post.likedByMe },
       {
         onSuccess: () => {
-          // optimistically update UI
-          setLiked((prev) => !prev);
-          setLikes((prev) => (liked ? prev - 1 : prev + 1));
+          // toggle UI state PostCard
+          setLiked(!post.likedByMe);
+          setLikes(post.likedByMe ? post.likeCount - 1 : post.likeCount + 1);
         },
-      },
+      }
     );
   };
 
@@ -36,11 +34,11 @@ export default function PostActions({ post }: Props) {
       <button onClick={handleLike}>
         <Heart
           className={`w-6 h-6 ${
-            liked ? "text-red-500 fill-red-500" : "text-white"
+            post.likedByMe ? "text-red-500 fill-red-500" : "text-white"
           }`}
         />
       </button>
-      <span className="text-sm text-gray-400">{likes} likes</span>
+      <span className="text-sm text-gray-400">{post.likeCount} likes</span>
     </div>
   );
 }

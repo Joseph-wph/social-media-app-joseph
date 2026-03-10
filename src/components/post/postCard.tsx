@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import PostHeader from "./postHeader";
 import PostImage from "./postImage";
 import PostStats from "./postStats";
@@ -30,6 +31,9 @@ type Props = {
 export default function PostCard({ post }: Props) {
   const user = post.author;
 
+  const [liked, setLiked] = useState(post.likedByMe);
+  const [likes, setLikes] = useState(post.likeCount);
+
   return (
     <div className="space-y-3 border-b border-neutral-950 pb-6">
       <PostHeader user={user} createdAt={post.createdAt || ""} />
@@ -38,19 +42,14 @@ export default function PostCard({ post }: Props) {
 
       <div className="flex justify-between items-center">
         <PostActions
-          post={{
-            id: post.id,
-            likedByMe: post.likedByMe,
-            likeCount: post.likeCount,
-          }}
+          post={{ id: post.id, likedByMe: liked, likeCount: likes }}
+          setLiked={setLiked}
+          setLikes={setLikes}
         />
         <PostSave />
       </div>
 
-      <PostStats
-        likes={post.likeCount || 0}
-        comments={post.commentCount || 0}
-      />
+      <PostStats likes={likes} comments={post.commentCount} />
 
       <PostCaption
         username={user?.username || "Unknown"}
