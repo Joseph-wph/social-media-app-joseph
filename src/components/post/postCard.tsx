@@ -40,16 +40,22 @@ export default function PostCard({ post }: Props) {
         <PostActions
           post={{
             id: post.id,
-            liked: post.likedByMe,
-            likesCount: post.likeCount,
+            likedByMe: post.likedByMe,
+            likeCount: post.likeCount,
           }}
         />
         <PostSave />
       </div>
 
-      <PostStats likes={post.likeCount || 0} comments={post.commentCount || 0} />
+      <PostStats
+        likes={post.likeCount || 0}
+        comments={post.commentCount || 0}
+      />
 
-      <PostCaption username={user?.username || "Unknown"} caption={post.caption || ""} />
+      <PostCaption
+        username={user?.username || "Unknown"}
+        caption={post.caption || ""}
+      />
     </div>
   );
 }
