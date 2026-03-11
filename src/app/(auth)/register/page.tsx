@@ -31,7 +31,6 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterForm) => {
     await registerUser(data);
-
     router.push("/login");
   };
 
@@ -39,62 +38,105 @@ export default function RegisterPage() {
     <RedirectIfAuth>
       <AuthCard title="Register">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <input
-            {...register("name")}
-            placeholder="Enter your name"
-            className="input"
-          />
 
-          <input
-            {...register("username")}
-            placeholder="Enter your username"
-            className="input"
-          />
+          {/* NAME */}
+          <div>
+            <label className="text-sm font-bold text-gray-300">Name</label>
+            <input
+              {...register("name")}
+              placeholder="Enter your name"
+              className="input mt-1"
+            />
+            {errors.name && (
+              <p className="text-red-400 text-xs">{errors.name.message}</p>
+            )}
+          </div>
 
-          <input
-            {...register("phone")}
-            placeholder="Enter your number phone"
-            className="input"
-          />
+          {/* USERNAME */}
+          <div>
+            <label className="text-sm font-bold text-gray-300">Username</label>
+            <input
+              {...register("username")}
+              placeholder="Enter your username"
+              className="input mt-1"
+            />
+            {errors.username && (
+              <p className="text-red-400 text-xs">{errors.username.message}</p>
+            )}
+          </div>
 
-          <input
-            {...register("email")}
-            placeholder="Enter your email"
-            className="input"
-          />
+          {/* PHONE */}
+          <div>
+            <label className="text-sm font-bold text-gray-300">Phone Number</label>
+            <input
+              {...register("phone")}
+              placeholder="Enter your phone number"
+              className="input mt-1"
+            />
+            {errors.phone && (
+              <p className="text-red-400 text-xs">{errors.phone.message}</p>
+            )}
+          </div>
 
+          {/* EMAIL */}
+          <div>
+            <label className="text-sm font-bold text-gray-300">Email</label>
+            <input
+              {...register("email")}
+              placeholder="Enter your email"
+              className="input mt-1"
+            />
+            {errors.email && (
+              <p className="text-red-400 text-xs">{errors.email.message}</p>
+            )}
+          </div>
+
+          {/* PASSWORD */}
           <div className="relative">
+            <label className="text-sm font-bold text-gray-300">Password</label>
             <input
               {...register("password")}
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
-              className="input"
+              className="input mt-1"
             />
 
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3"
+              className="absolute right-3 top-9"
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
+
+            {errors.password && (
+              <p className="text-red-400 text-xs">{errors.password.message}</p>
+            )}
           </div>
 
+          {/* CONFIRM PASSWORD */}
           <div className="relative">
+            <label className="text-sm font-bold text-gray-300">Confirm Password</label>
             <input
               {...register("confirmPassword")}
               type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm password"
-              className="input"
+              placeholder="Confirm your password"
+              className="input mt-1"
             />
 
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3"
+              className="absolute right-3 top-9"
             >
               {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
+
+            {errors.confirmPassword && (
+              <p className="text-red-400 text-xs">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
           <button className="mt-2 rounded-full bg-linear-to-r from-purple-500 to-indigo-500 p-2 text-white font-semibold">

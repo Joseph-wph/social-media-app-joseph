@@ -40,7 +40,7 @@ export default function LoginPage() {
       <AuthCard title="Welcome Back!">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div>
-            <label className="text-sm text-gray-300">Email</label>
+            <label className="text-sm font-bold text-gray-300">Email</label>
 
             <input
               {...register("email")}
@@ -54,7 +54,7 @@ export default function LoginPage() {
           </div>
 
           <div className="relative">
-            <label className="text-sm text-gray-300">Password</label>
+            <label className="text-sm font-bold text-gray-300">Password</label>
 
             <input
               {...register("password")}

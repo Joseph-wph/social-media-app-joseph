@@ -26,9 +26,12 @@ export default function Navbar() {
     <nav className="border-b border-neutral-700 bg-neutral-950">
       <div className="flex items-center justify-between p-4 max-w-5xl mx-auto">
         {/* LOGO */}
-        <Link href="/feed" className="font-bold text-lg">
-          SocialApp
-        </Link>
+        <div className="flex gap-3">
+          <img src="/assets/logo/logo.svg" alt="logo" />
+          <Link href="/feed" className="font-bold text-lg">
+            Sociality
+          </Link>
+        </div>
 
         {/* SEARCH */}
         <input
