@@ -34,12 +34,20 @@ export default function LoginPage() {
     try {
       const res = await loginMutation.mutateAsync(data);
 
-      const token = res.data.token;
+      // Ambil token dari response API (sesuaikan dengan backend)
+      const token = res.data?.token;
+      if (!token) throw new Error("Token not found");
+
+      // Update state login
       login(token);
 
-      router.push("/feed");
+      // Delay kecil agar state benar-benar update sebelum push
+      setTimeout(() => {
+        router.push("/feed");
+      }, 50);
     } catch (err) {
       console.error("Login error", err);
+      alert("Login failed. Please check your credentials.");
     }
   };
 
@@ -47,30 +55,28 @@ export default function LoginPage() {
     <RedirectIfAuth>
       <AuthCard title="Welcome Back!">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          {/* Email */}
           <div>
             <label className="text-sm font-bold text-gray-300">Email</label>
-
             <input
               {...register("email")}
               placeholder="Enter your email"
               className="w-full mt-1 rounded-md bg-black border border-gray-700 p-2 text-white"
             />
-
             {errors.email && (
               <p className="text-red-400 text-xs">{errors.email.message}</p>
             )}
           </div>
 
+          {/* Password */}
           <div className="relative">
             <label className="text-sm font-bold text-gray-300">Password</label>
-
             <input
               {...register("password")}
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
               className="w-full mt-1 rounded-md bg-black border border-gray-700 p-2 text-white"
             />
-
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -78,12 +84,12 @@ export default function LoginPage() {
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
-
             {errors.password && (
               <p className="text-red-400 text-xs">{errors.password.message}</p>
             )}
           </div>
 
+          {/* Submit */}
           <button
             disabled={loginMutation.isPending}
             className="mt-2 rounded-full bg-linear-to-r from-purple-500 to-indigo-500 p-2 text-white font-semibold"

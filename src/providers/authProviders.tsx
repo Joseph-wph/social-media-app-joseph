@@ -16,10 +16,13 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isReady, setIsReady] = useState(false) // flag untuk menunggu localStorage
 
+  // cek token di localStorage setelah mount
   useEffect(() => {
     const token = localStorage.getItem("token")
     setIsLoggedIn(!!token)
+    setIsReady(true) // siap render anak-anak
   }, [])
 
   const login = (token: string) => {
@@ -31,6 +34,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("token")
     setIsLoggedIn(false)
   }
+
+  // jangan render children sebelum siap
+  if (!isReady) return null
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>

@@ -20,6 +20,7 @@ export default function RegisterPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -30,8 +31,16 @@ export default function RegisterPage() {
   });
 
   const onSubmit = async (data: RegisterForm) => {
-    await registerUser(data);
-    router.push("/login");
+    try {
+      setLoading(true);
+      await registerUser(data);
+      setLoading(false);
+      router.push("/login");
+    } catch (err) {
+      setLoading(false);
+      console.error("Register error", err);
+      alert("Registration failed. Please check your inputs or try again.");
+    }
   };
 
   return (
@@ -100,7 +109,6 @@ export default function RegisterPage() {
               placeholder="Enter your password"
               className="input mt-1"
             />
-
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -108,7 +116,6 @@ export default function RegisterPage() {
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
-
             {errors.password && (
               <p className="text-red-400 text-xs">{errors.password.message}</p>
             )}
@@ -123,7 +130,6 @@ export default function RegisterPage() {
               placeholder="Confirm your password"
               className="input mt-1"
             />
-
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -131,16 +137,16 @@ export default function RegisterPage() {
             >
               {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
-
             {errors.confirmPassword && (
-              <p className="text-red-400 text-xs">
-                {errors.confirmPassword.message}
-              </p>
+              <p className="text-red-400 text-xs">{errors.confirmPassword.message}</p>
             )}
           </div>
 
-          <button className="mt-2 rounded-full bg-linear-to-r from-purple-500 to-indigo-500 p-2 text-white font-semibold">
-            Submit
+          <button
+            disabled={loading}
+            className="mt-2 rounded-full bg-linear-to-r from-purple-500 to-indigo-500 p-2 text-white font-semibold"
+          >
+            {loading ? "Registering..." : "Submit"}
           </button>
         </form>
 
