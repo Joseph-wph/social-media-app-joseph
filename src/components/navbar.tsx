@@ -23,7 +23,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="border-b border-neutral-700 bg-neutral-950">
+    <nav className="w-full mx-auto border-b border-neutral-700 bg-neutral-950">
       <div className="flex items-center justify-between p-4 max-w-5xl mx-auto">
         {/* LOGO */}
         <div className="flex gap-3">
@@ -36,14 +36,18 @@ export default function Navbar() {
         {/* SEARCH */}
         <input
           placeholder="Search..."
-          className="hidden md:block border-neutral-700 bg-neutral-800 rounded-full px-3 py-1 w-64"
+          className="hidden md:block border border-neutral-800 bg-neutral-900 rounded-full px-3 py-1 w-64"
         />
 
         {/* USER NAVBAR */}
         {user ? (
           <div className="flex items-center gap-3">
             <Image
-              src={user.avatarUrl || "/assets/avatar/avatar.svg"}
+              src={
+                user?.avatarUrl && user.avatarUrl.startsWith("http")
+                  ? user.avatarUrl
+                  : "/assets/avatar/avatar.svg"
+              }
               alt="avatar"
               width={36}
               height={36}
@@ -65,13 +69,16 @@ export default function Navbar() {
           <>
             {/* DESKTOP GUEST */}
             <div className="hidden md:flex gap-3">
-              <Link href="/login" className="px-3 py-1 border rounded">
+              <Link
+                href="/login"
+                className="w-32 h-11 px-3 py-1 hover:bg-(--color-primary-300) border border-neutral-700 rounded-full flex justify-center items-center"
+              >
                 Login
               </Link>
 
               <Link
                 href="/register"
-                className="px-3 py-1 bg-black text-white rounded"
+                className="w-32 h-11 px-3 py-1 hover:bg-(--color-primary-300) border border-neutral-700 rounded-full flex justify-center items-center"
               >
                 Register
               </Link>
@@ -90,12 +97,18 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
       {!user && menuOpen && (
-        <div className="flex md:hidden border-t">
-          <Link href="/login" className="flex-1 text-center p-3 border-r">
+        <div className="w-full mx-auto md:hidden mb-5 flex justify-center items-center gap-5 px-5">
+          <Link
+            href="/login"
+            className="w-43 h-10 px-3 py-1 hover:bg-(--color-primary-300) border border-neutral-700 rounded-full flex justify-center items-center"
+          >
             Login
           </Link>
 
-          <Link href="/register" className="flex-1 text-center p-3">
+          <Link
+            href="/register"
+            className="w-43 h-10 px-3 py-1 hover:bg-(--color-primary-300) border border-neutral-700 rounded-full flex justify-center items-center"
+          >
             Register
           </Link>
         </div>
