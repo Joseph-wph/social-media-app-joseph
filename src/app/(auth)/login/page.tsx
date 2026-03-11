@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import RedirectIfAuth from "@/components/auth/RedirectIfAuth";
+import { useAuth } from "@/providers/authProviders";
 
 import { loginSchema, LoginForm } from "@/features/auth/authSchema";
 import { useLogin } from "@/features/auth/useLogin";
@@ -16,7 +17,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
-
+  const { login } = useAuth();
   const loginMutation = useLogin();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -30,9 +31,16 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginForm) => {
-    await loginMutation.mutateAsync(data);
+    try {
+      const res = await loginMutation.mutateAsync(data);
 
-    router.push("/feed");
+      const token = res.data.token;
+      login(token);
+
+      router.push("/feed");
+    } catch (err) {
+      console.error("Login error", err);
+    }
   };
 
   return (
